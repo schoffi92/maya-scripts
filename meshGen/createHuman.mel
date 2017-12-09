@@ -1,0 +1,8 @@
+string $mayaPath = `getenv MAYA_LOCATION`;
+string $humanBodyPath = $mayaPath + "/Examples/Modeling/Sculpting_Base_Meshes/Bipeds/HumanBody.ma";
+file -import -type "mayaAscii"  -ignoreVersion -mergeNamespacesOnClash false -rpr "HumanBody" -options "v=0;" $humanBodyPath;
+string $objName = `rename "|humanBody" "human_geo"`;
+if (`objExists "|humans_grp"`) {
+    ungroup "|humans_grp";
+}
+group -n "|humans_grp" "|human_geo*";
