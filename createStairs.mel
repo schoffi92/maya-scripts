@@ -1,0 +1,123 @@
+window -rtf true -title "Create Stairs";
+
+    columnLayout;
+        intSliderGrp -label "Number Of Steps" -value 6 -field true numStepSlider;
+        floatSliderGrp -label "Rail Height" -value 14 -field true railHeightSlider;
+
+        floatSliderGrp -label "Step Height" -value 4 -field true stepHeightSlider;
+        floatSliderGrp -label "Step Width" -value 24 -field true stepWidthSlider;
+        floatSliderGrp -label "Step Depth" -value 8 -field true stepDepthtSlider;
+
+        intSliderGrp -label "Number Of Rail Support" -value 6 -field true -min 2 numRailsSlider;
+
+        checkBox -label "Right Handrail" -value true rightHandrailCheck;
+        checkBox -label "Left Handrail" -value true leftHandrailCheck;
+
+
+        button -label "Make Stairs" -command "MakeStairs";
+
+showWindow;
+
+// Create Make Stairs Procedure
+proc MakeStairs() {
+    // Number Of Steps
+    int $numSteps = `intSliderGrp -q -value "numStepSlider"`;
+    int $numRails = `intSliderGrp -q -value "numRailsSlider"`;
+    float $railH = `floatSliderGrp -q -value "railHeightSlider"`;
+
+    // Step Size
+    float $stepH = `floatSliderGrp -q -value "stepHeightSlider"`;
+    float $stepW = `floatSliderGrp -q -value "stepWidthSlider"`;
+    float $stepD = `floatSliderGrp -q -value "stepDepthtSlider"`;
+
+    // Calculation Of Rail and Total Depth/Height
+    float $totalD = $stepD * $numSteps;
+    float $totalH = $stepH * $numSteps;
+    float $railAngle = atand($totalD/$totalH);
+    float $railLen = sqrt($totalH*$totalH + $totalD*$totalD);
+    
+    //
+    float $divRailC = ($totalD - $stepD) / `cosd (90 - $railAngle)`;
+    float $divRail = $divRailC / ($numRails - 1);
+    float $divRailD = $divRail * `cosd (90 - $railAngle)`;
+    float $divRailH = sqrt( ($divRail * $divRail) - ($divRailD * $divRailD) );
+
+
+    // String Arrays To Collect Object Names
+    string $objNames[] = {};
+    string $stepNames[] = {};
+    string $railNames[] = {};
+
+    // Create Steps
+    for ($i = 0; $i < $numSteps; ++$i) {
+        $objNames = `polyCube -h $stepH -w $stepW -d $stepD -name "step_geo"`;
+        move -r 0 ($stepH * $i) ($stepD * $i);
+        $stepNames[size($stepNames)] = $objNames[0];
+        
+        if ($railH > 0) {
+            if ($i == 0 || $numSteps == $i + 1) {
+                if (`checkBox -q -value "leftHandrailCheck"` == true) {
+                    $objNames = `polyCylinder -r 0.5 -h $railH -name "railSupport_geo"`;
+                    move -r ($stepW/2) ($stepH*$i + 0.5*$railH) ($stepD*$i);
+                    $railNames[size($railNames)] = $objNames[0];
+                }
+    
+                if (`checkBox -q -value "rightHandrailCheck"` == true) {
+                    $objNames = `polyCylinder -r 0.5 -h $railH -name "railSupport_geo"`;
+                    move -r (-$stepW/2) ($stepH*$i + 0.5*$railH) ($stepD*$i);
+                    $railNames[size($railNames)] = $objNames[0];
+                }
+            }
+        }
+    }
+
+    // Create Rail if Rail Height > 0
+    if ($railH > 0) {
+        for ($i = 1; $i <= ($numRails - 2); ++$i) {
+                if (`checkBox -q -value "leftHandrailCheck"` == true) {
+                    $objNames = `polyCylinder -r 0.5 -h $railH -name "railSupport_geo"`;
+                    move -r ($stepW/2) ( $i * $divRailH + $railH*0.5) ($i*$divRailD);
+                    $railNames[size($railNames)] = $objNames[0];
+                }
+    
+                if (`checkBox -q -value "rightHandrailCheck"` == true) {
+                    $objNames = `polyCylinder -r 0.5 -h $railH -name "railSupport_geo"`;
+                    move -r (-$stepW/2) ( $i * $divRailH + $railH*0.5) ($i*$divRailD);
+                    $railNames[size($railNames)] = $objNames[0];
+                }
+        }
+
+        if (`checkBox -q -value "leftHandrailCheck"` == true) {
+            $objNames = `polyCylinder -r 0.5 -h $railLen -name "rail_geo"`;
+            $railNames[size($railNames)] = $objNames[0];
+            rotate -r $railAngle;
+            move -r ($stepW / 2) ($totalH/2 + $railH - 0.5*$stepH) ($totalD / 2 - 0.5 * $stepD);
+        }
+
+        if (`checkBox -q -value "rightHandrailCheck"` == true) {
+            $objNames = `polyCylinder -r 0.5 -h $railLen -name "rail_geo"`;
+            $railNames[size($railNames)] = $objNames[0];
+            rotate -r $railAngle;
+            move -r (-$stepW / 2) ($totalH/2 + $railH - 0.5*$stepH) ($totalD / 2 - 0.5 * $stepD);
+        }
+    }
+
+    // Some Debug
+    print ("a: " + $divRailH + ", b: " + $divRailD + ", c: " + $divRail + ", angle: " + $railAngle + "\n");
+
+    // CleanUp Outliner - Create Groups
+    string $stepsGrp = `group -name "steps_grp" $stepNames`;
+    string $railsGrp = "";
+    if (size($railNames) > 0) {
+        $railsGrp = `group -name "rails_grp" $railNames`;
+    }
+    
+    if ($railsGrp != "") {
+        group -name "stair_grp" $stepsGrp $railsGrp;
+    }
+    else
+    {
+       group -name "stair_grp" $stepsGrp;
+    }
+
+}
