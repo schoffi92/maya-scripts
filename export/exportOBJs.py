@@ -21,7 +21,7 @@ def exportAllSelectedGEO(self):
     # file -force -options "groups=1;ptgroups=1;materials=1;smoothing=1;normals=1" -typ "OBJexport" -pr -es "D:/MayaProjects/MayaPro_Training/data/zbrush/book2/bookPage.obj";
     for obj in selection:
         mc.select(obj)
-        mc.file(directory + obj + ".obj", typ="OBJexport",force=True,pr=True,es=True)
+        mc.file(directory + obj.replace("|", "_") + ".obj", typ="OBJexport",force=True,pr=True,es=True)
     mc.select(selection)
     pass
 
