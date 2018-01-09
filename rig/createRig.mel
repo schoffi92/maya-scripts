@@ -1,0 +1,5 @@
+// source "C:/Users/raccoon/Documents/maya/scripts/rig/createRig.mel";
+
+group -empty -n "|geo_grp";
+group -empty -n "|rig_grp";
+group -n "|root" "|geo_grp" "|rig_grp";

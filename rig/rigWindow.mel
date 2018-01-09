@@ -1,0 +1,26 @@
+// source "C:/Users/raccoon/Documents/maya/scripts/rig/rigWindow.mel";
+
+window -rtf true -title "Custom Rig Window";
+
+    columnLayout;
+        button -label "Create Start Groups" - command "StartRig";
+        button -label "Make Driven And Offset Group" -command "MakeDriveAndOffGroups";
+
+showWindow;
+
+proc StartRig() {
+    group -empty -n "|geo_grp";
+    group -empty -n "|rig_grp";
+    group -n "|root" "|geo_grp" "|rig_grp";
+}
+
+proc MakeDriveAndOffGroups() {
+    string $selection[] = `ls -sl`;
+    string $name = $selection[0];
+
+    group -n ($name + "_driven");
+    group -n ($name + "_off");
+}
+
+
+

@@ -1,0 +1,4 @@
+// source "C:/Users/raccoon/Documents/maya/scripts/meshGen/create.mel";
+
+group -empty -n "|geos_grp";
+group -empty -n "|lights_grp";
