@@ -1,0 +1,12 @@
+string $mirrorObjs[];
+string $selected[] = `ls -sl`;
+    
+for ($obj in $selected) {
+    select $obj;
+    string $objNames[] = `duplicate -rr`;
+    $mirrorObjs[size($mirrorObjs)] = $objNames[0];
+    scale -r -1 1 1;
+    makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
+}
+    
+select $mirrorObjs;

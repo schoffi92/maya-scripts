@@ -1,4 +1,4 @@
-// source "C:/Users/raccoon/Documents/maya/scripts/rig/rigWindow.mel";
+// source "C:/Users/<User>/Documents/maya/scripts/rig/rigWindow.mel";
 int $height = 32;
 
 window -rtf true -title "Custom Rig Window";

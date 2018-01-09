@@ -1,0 +1,1 @@
+polyCube -ch 1 -w 12 -h 6.5 -d 25 -name "brick_geo";
