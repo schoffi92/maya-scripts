@@ -1,5 +1,6 @@
 // Create Make Stairs Procedure
-proc MakeStairs() {
+global proc MakeStairs()
+{
     // Number Of Steps
     int $numSteps = `intSliderGrp -q -value "numStepSlider"`;
     int $numRails = `intSliderGrp -q -value "numRailsSlider"`;

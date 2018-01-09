@@ -1,13 +1,13 @@
 // source "C:/Users/<User>/Documents/maya/scripts/rig/rigWindow.mel";
 int $height = 32;
 
-proc StartRig() {
+global proc StartRig() {
     group -empty -n "|geo_grp";
     group -empty -n "|rig_grp";
     group -n "|root" "|geo_grp" "|rig_grp";
 }
 
-proc MakeDriveAndOffGroups() {
+global proc MakeDriveAndOffGroups() {
     string $selection[] = `ls -sl`;
     string $name = $selection[0];
 
@@ -15,7 +15,7 @@ proc MakeDriveAndOffGroups() {
     group -n ($name + "_off");
 }
 
-proc CreateBaseCtrl() {
+global proc CreateBaseCtrl() {
     string $circleNames[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 3 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
     string $circleName = $circleNames[0];
     select -r ($circleName + ".cv[6]") ;
@@ -28,7 +28,7 @@ proc CreateBaseCtrl() {
     makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
 }
 
-proc CreateSphereCtrl() {
+global proc CreateSphereCtrl() {
     string $circleParts[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
     rotate 0 0 90;
     makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
@@ -49,7 +49,7 @@ proc CreateSphereCtrl() {
     select $circleName;
 }
 
-proc CreateRoundSquareCtrl() {
+global proc CreateRoundSquareCtrl() {
     string $circleNames[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
     string $circleName = $circleNames[0];
     select -r ($circleName + ".cv[1]");
@@ -61,7 +61,7 @@ proc CreateRoundSquareCtrl() {
     select $circleName;
 }
 
-proc CreateCubeCtrl() {
+global proc CreateCubeCtrl() {
     
 }
 
