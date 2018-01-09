@@ -1,23 +1,3 @@
-window -rtf true -title "Create Stairs";
-
-    columnLayout -adj 1;
-        intSliderGrp -label "Number Of Steps" -value 6 -field true numStepSlider;
-        floatSliderGrp -label "Rail Height" -value 14 -field true railHeightSlider;
-
-        floatSliderGrp -label "Step Height" -value 4 -field true stepHeightSlider;
-        floatSliderGrp -label "Step Width" -value 24 -field true stepWidthSlider;
-        floatSliderGrp -label "Step Depth" -value 8 -field true stepDepthtSlider;
-
-        intSliderGrp -label "Number Of Rail Support" -value 6 -field true -min 2 numRailsSlider;
-
-        checkBox -label "Right Handrail" -value true rightHandrailCheck;
-        checkBox -label "Left Handrail" -value true leftHandrailCheck;
-
-
-        button -label "Make Stairs" -command "MakeStairs";
-
-showWindow;
-
 // Create Make Stairs Procedure
 proc MakeStairs() {
     // Number Of Steps
@@ -121,3 +101,24 @@ proc MakeStairs() {
     }
 
 }
+
+
+window -rtf true -title "Create Stairs";
+
+    columnLayout -adj 1;
+        intSliderGrp -label "Number Of Steps" -value 6 -field true numStepSlider;
+        floatSliderGrp -label "Rail Height" -value 14 -field true railHeightSlider;
+
+        floatSliderGrp -label "Step Height" -value 4 -field true stepHeightSlider;
+        floatSliderGrp -label "Step Width" -value 24 -field true stepWidthSlider;
+        floatSliderGrp -label "Step Depth" -value 8 -field true stepDepthtSlider;
+
+        intSliderGrp -label "Number Of Rail Support" -value 6 -field true -min 2 numRailsSlider;
+
+        checkBox -label "Right Handrail" -value true rightHandrailCheck;
+        checkBox -label "Left Handrail" -value true leftHandrailCheck;
+
+
+        button -label "Make Stairs" -command "MakeStairs";
+
+showWindow;
