@@ -1,10 +1,25 @@
 // source "C:/Users/raccoon/Documents/maya/scripts/rig/rigWindow.mel";
+int $height = 32;
 
 window -rtf true -title "Custom Rig Window";
 
-    columnLayout;
-        button -label "Create Start Groups" - command "StartRig";
-        button -label "Make Driven And Offset Group" -command "MakeDriveAndOffGroups";
+    columnLayout -adj 1;
+        separator;
+        separator "Before Start To Rig Press This Button";
+        separator;
+        button -label "Create Start Groups" -command "StartRig" -height $height;
+        separator;
+        separator "Work Faster";
+        separator;
+        button -label "Make Driven And Offset Group" -command "MakeDriveAndOffGroups" -height $height;
+        separator;
+        separator "Controllers";
+        separator;
+        button -label "Create Circle" -command "circle -radius 4 -ch 0" -height $height;
+        button -label "Create Rounded Square" -command "CreateRoundSquareCtrl" -height $height;
+        button -label "Create Base Controller" -command "CreateBaseCtrl" -height $height;
+        button -label "Create Sphere Controller" -command "CreateSphereCtrl" -height $height;
+        button -label "Create Cube Controller" -command "CreateCubeCtrl" -height $height;
 
 showWindow;
 
@@ -22,5 +37,50 @@ proc MakeDriveAndOffGroups() {
     group -n ($name + "_off");
 }
 
+proc CreateBaseCtrl() {
+    string $circleNames[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 3 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
+    string $circleName = $circleNames[0];
+    select -r ($circleName + ".cv[6]") ;
+    select -tgl ($circleName + ".cv[4]") ;
+    select -tgl ($circleName + ".cv[2]") ;
+    select -tgl ($circleName + ".cv[0]") ;
+    scale -r -p 0 0 0 0.15 1 0.15 ;
+    select $circleName;
+    scale 2 2 2;
+    makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
+}
 
+proc CreateSphereCtrl() {
+    string $circleParts[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
+    rotate 0 0 90;
+    makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
+    string $circleName = $circleParts[0];
 
+    string $circleParts[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
+    rotate 90 0 0;
+    makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
+    string $shapes[] = `listRelatives -shapes $circleParts[0]`;
+    parent -s -add $shapes[0] $circleName;
+    delete $circleParts;
+
+    string $circleParts[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
+    string $shapes[] = `listRelatives -shapes $circleParts[0]`;
+    parent -s -add $shapes[0] $circleName;
+    delete $circleParts;
+}
+
+proc CreateRoundSquareCtrl() {
+    string $circleNames[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
+    string $circleName = $circleNames[0];
+    select -r ($circleName + ".cv[1]");
+    select -tgl ($circleName + ".cv[3]");
+    select -tgl ($circleName + ".cv[5]");
+    select -tgl ($circleName + ".cv[7]");
+    scale -r -p 0 0 0 0.6 1 0.6 ;
+    makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
+    select $circleName;
+}
+
+proc CreateCubeCtrl() {
+    
+}

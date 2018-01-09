@@ -1,6 +1,6 @@
 window -rtf true -title "Create Stairs";
 
-    columnLayout;
+    columnLayout -adj 1;
         intSliderGrp -label "Number Of Steps" -value 6 -field true numStepSlider;
         floatSliderGrp -label "Rail Height" -value 14 -field true railHeightSlider;
 
