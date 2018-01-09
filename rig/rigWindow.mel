@@ -45,6 +45,8 @@ proc CreateSphereCtrl() {
     string $shapes[] = `listRelatives -shapes $circleParts[0]`;
     parent -s -add $shapes[0] $circleName;
     delete $circleParts;
+
+    select $circleName;
 }
 
 proc CreateRoundSquareCtrl() {
