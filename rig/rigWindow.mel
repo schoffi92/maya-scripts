@@ -28,6 +28,21 @@ global proc CreateBaseCtrl() {
     makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
 }
 
+global proc CreateDoubleCircleCtrl() {
+    string $circleParts[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
+    makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
+    string $circleName = $circleParts[0];
+
+    string $circleParts[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
+    scale 0.8 0.8 0.8;
+    makeIdentity -apply true -t 1 -r 1 -s 1 -n 0 -pn 1;
+    string $shapes[] = `listRelatives -shapes $circleParts[0]`;
+    parent -s -add $shapes[0] $circleName;
+    delete $circleParts;
+
+    select $circleName;
+}
+
 global proc CreateSphereCtrl() {
     string $circleParts[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 4 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0`;
     rotate 0 0 90;
@@ -65,6 +80,15 @@ global proc CreateCubeCtrl() {
     
 }
 
+global proc ReplaceVertexFlood() {
+    float $value = `floatSliderGrp -q -value "floodSlider"`;
+    string $selection[] = `ls -sl`;
+    int $lastElement = size($selection)-1;
+
+    for ($i=0;$i<$lastElement;$i++) {
+        skinPercent -tv $selection[$lastElement] $value skinCluster1 $selection[$i];
+    }
+}
 
 
 window -rtf true -title "Custom Rig Window";
@@ -75,6 +99,14 @@ window -rtf true -title "Custom Rig Window";
         separator;
         button -label "Create Start Groups" -command "StartRig" -height $height;
         separator;
+        separator "Default Tools";
+        separator;
+        button -label "Human IK" -command "HIKCharacterControlsTool" -height $height;
+        button -label "Quick Rig" -command "QuickRigEditor" -height $height;
+        button -label "Paint Weights" -command "ArtPaintSkinWeightsTool" -height $height;
+        floatSliderGrp -label "Flood Value" -min 0 -max 1 -value 1.0 -field true floodSlider;
+        button -label "Flood" -command "ReplaceVertexFlood" -height $height;
+        separator;
         separator "Work Faster";
         separator;
         button -label "Make Driven And Offset Group" -command "MakeDriveAndOffGroups" -height $height;
@@ -82,9 +114,10 @@ window -rtf true -title "Custom Rig Window";
         separator "Controllers";
         separator;
         button -label "Create Circle" -command "circle -radius 4 -ch 0" -height $height;
+        button -label "Create Double Circle" -command "CreateDoubleCircleCtrl" -height $height;
         button -label "Create Rounded Square" -command "CreateRoundSquareCtrl" -height $height;
         button -label "Create Base Controller" -command "CreateBaseCtrl" -height $height;
         button -label "Create Sphere Controller" -command "CreateSphereCtrl" -height $height;
-        button -label "Create Cube Controller" -command "CreateCubeCtrl" -height $height;
+        //button -label "Create Cube Controller" -command "CreateCubeCtrl" -height $height;
 
 showWindow;
