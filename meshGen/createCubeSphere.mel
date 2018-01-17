@@ -1,13 +1,26 @@
 // source "C:/Users/<User>/Documents/maya/scripts/meshGen/createCubeSphere.mel";
+
 proc CreateCubeSphere() {
     int $cubeDivides = 1;
     float $scaleSize = 4;
+    
+    // Create a cube
     string $cubeName[] = `polyCube -w 1 -h 1 -d 1 -sx $cubeDivides -sy $cubeDivides -sz $cubeDivides -ax 0 1 0 -cuv 4 -ch 0`;
+    
+    // Smooth the cube (because its vertexes not equally far if we just use the deformer)
     polySmooth -dv 2;
+    
+    // Set Faces Soft (not neccessary, but I like to fix it)
     polySoftEdge -a 180 -ch 0 $cubeName[0];
+    
+    // Create Sculpt Deformer
     string $sculptName[] = `sculpt  -mode stretch -insideMode even -maxDisplacement 0.1 -dropoffType linear -dropoffDistance 1 -groupWithLocator 0 -objectCentered 1 $cubeName[0]`;
+    
+    // Select the deformer and scale it
     select $sculptName[1];
     scale $scaleSize $scaleSize $scaleSize;
+    
+    // Select the cube (now its sphere, but who cares?) and delete its history
     select $cubeName[0];
     DeleteHistory;
 }
