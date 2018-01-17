@@ -1,8 +1,9 @@
 // source "C:/Users/<User>/Documents/maya/scripts/meshGen/createCubeSphere.mel";
 proc CreateCubeSphere() {
-    int $cubeDivides = 8;
+    int $cubeDivides = 1;
     float $scaleSize = 4;
     string $cubeName[] = `polyCube -w 1 -h 1 -d 1 -sx $cubeDivides -sy $cubeDivides -sz $cubeDivides -ax 0 1 0 -cuv 4 -ch 0`;
+    polySmooth -dv 2;
     polySoftEdge -a 180 -ch 0 $cubeName[0];
     string $sculptName[] = `sculpt  -mode stretch -insideMode even -maxDisplacement 0.1 -dropoffType linear -dropoffDistance 1 -groupWithLocator 0 -objectCentered 1 $cubeName[0]`;
     select $sculptName[1];
