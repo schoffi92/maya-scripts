@@ -31,10 +31,10 @@ Maya Scripts
     It will show Quick Rig tool
 1. Flood function
     Workflow:
-    2. Set The Flood Value
-    2. Select the vertexes
-    2. Select the joint
-    2. Press Flood button
+    1. Set The Flood Value
+    1. Select the vertexes
+    1. Select the joint
+    1. Press Flood button
 
 ## Controller Shapes
 
