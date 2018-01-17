@@ -84,6 +84,10 @@ global proc ReplaceVertexFlood() {
     float $value = `floatSliderGrp -q -value "floodSlider"`;
     string $selection[] = `ls -sl`;
     int $lastElement = size($selection)-1;
+    if (`objectType $lastElement` != "joint") {
+        error "Select the vertexes and then the joint";
+        return;
+    }
 
     for ($i=0;$i<$lastElement;$i++) {
         skinPercent -tv $selection[$lastElement] $value skinCluster1 $selection[$i];
