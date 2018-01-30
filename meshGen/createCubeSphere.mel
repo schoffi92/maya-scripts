@@ -10,7 +10,7 @@ proc CreateCubeSphere() {
     // Smooth the cube (because its vertexes not equally far if we just use the deformer)
     polySmooth -dv 2;
     
-    // Set Faces Soft (not neccessary, but I like to fix it)
+    // Set Faces Soft (not neccessary, but I love fix it, because without it for me feels like I have a knife in my eyes)
     polySoftEdge -a 180 -ch 0 $cubeName[0];
     
     // Create Sculpt Deformer
